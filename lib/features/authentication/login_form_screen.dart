@@ -96,6 +96,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                 onTap: _onSubmitTap,
                 child: const FormButton(
                   disabled: false,
+                  buttonText: "Log in",
                 ),
               ),
             ],
