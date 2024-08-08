@@ -31,6 +31,7 @@ class TikTokApp extends StatelessWidget {
             ),
           ),
           bottomAppBarTheme: const BottomAppBarTheme(
+            color: Colors.white,
             elevation: 0,
           )),
       // home: const SignUpScreen(),
