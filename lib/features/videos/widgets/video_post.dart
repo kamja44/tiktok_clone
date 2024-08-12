@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -24,6 +26,17 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   final Duration _animationDuration = const Duration(milliseconds: 100);
+  final String _videoText =
+      "Tiktok clone~Tiktok clone~Tiktok clone~Tiktok clone~";
+  bool _videoTextTap = false;
+
+  String _seeMoreText(String videoText, int maxLength) {
+    if (videoText.length >= maxLength) {
+      return "${videoText.substring(0, maxLength)} see more...";
+    } else {
+      return videoText;
+    }
+  }
 
   late final AnimationController _animationController;
   void _onVideoChange() {
@@ -38,6 +51,7 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     // _videoPlayerController.play();
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
   }
@@ -58,6 +72,7 @@ class _VideoPostState extends State<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -78,6 +93,11 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       _isPaused = !_isPaused;
     });
+  }
+
+  void _onVideoTextToggle() {
+    _videoTextTap = !_videoTextTap;
+    setState(() {});
   }
 
   @override
@@ -121,6 +141,65 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 30,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@감자",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                GestureDetector(
+                  onTap: _onVideoTextToggle,
+                  child: Text(
+                    _videoTextTap ? _videoText : _seeMoreText(_videoText, 10),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizes.size16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                      "https://avatars.githubusercontent.com/u/88872409?s=400&u=595c58644a270cace7e26fc44b1c79f8e53c782e&v=4"),
+                  child: Text("감자"),
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
             ),
           ),
         ],
