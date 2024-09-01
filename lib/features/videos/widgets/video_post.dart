@@ -125,6 +125,15 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
+  void _onToggleVolumePaused() async {
+    if (_videoPlayerController.value.volume == 0) {
+      await _videoPlayerController.setVolume(1);
+    } else {
+      await _videoPlayerController.setVolume(0);
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
@@ -165,6 +174,19 @@ class _VideoPostState extends State<VideoPost>
                     ),
                   ),
                 ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 15,
+            left: 15,
+            child: GestureDetector(
+              onTap: _onToggleVolumePaused,
+              child: VideoButton(
+                icon: _videoPlayerController.value.volume == 1.0
+                    ? FontAwesomeIcons.volumeHigh
+                    : FontAwesomeIcons.volumeXmark,
+                text: "",
               ),
             ),
           ),
